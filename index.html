@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>erm.....!!</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: pink;
+      color: #333;
+      overflow: hidden;
+    }
+
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .heart {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      transform: rotate(45deg);
+      animation: float 7s infinite ease-in-out;
+    }
+
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      border-radius: 50%;
+      top: -15px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -15px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 0.5;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .question, .slide {
+      margin-top: 20px;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      background: white;
+      border: 2px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: lightgray;
+    }
+
+    .calendar {
+      margin-top: 20px;
+    }
+
+    #admin-section {
+      display: none;
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: white;
+      border: 2px solid #333;
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 100;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts"></div>
+
+  <div class="content">
+    <img src="https://media1.tenor.com/m/-qBsG1HwR4oAAAAC/cat-dance-dancing-cat.gif" alt="Dancing Cat">
+    <div class="question">Do you remember what happened on November 30? :)))</div>
+    <button onclick="handleAnswer(true)">Yes</button>
+    <button onclick="handleAnswer(false)">No</button>
+  </div>
+
+  <!-- Admin-only section -->
+  <div id="admin-section">
+    <strong>Admin Panel:</strong>
+    <ul>
+      <li>Site visits: 123</li>
+      <li>Debug info: Enabled</li>
+    </ul>
+  </div>
+
+  <script>
+    const body = document.body;
+
+    // Create hearts animation
+    function createHearts() {
+      for (let i = 0; i < 10; i++) { // Reduced to 10 hearts
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = `${Math.random() * 100}vw`;
+        heart.style.animationDuration = `${5 + Math.random() * 5}s`;
+        document.querySelector('.hearts').appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+      }
+    }
+    setInterval(createHearts, 1000);
+
+    // Secret admin panel logic
+    function revealAdminPanel() {
+      const adminSection = document.getElementById("admin-section");
+      adminSection.style.display = "block";
+      alert("Welcome, Admin! The secret panel is now visible.");
+    }
+
+    // Listen for secret key combination (Ctrl+Shift+A)
+    window.addEventListener("keydown", function (event) {
+      if (event.ctrlKey && event.shiftKey && event.key === "A") {
+        revealAdminPanel();
+      }
+    });
+
+    // Handle question answer
+    function handleAnswer(isYes) {
+      const content = document.querySelector('.content');
+      content.innerHTML = '';
+
+      if (!isYes) {
+        content.innerHTML = `
+          <img src="https://media1.tenor.com/m/t7_iTN0iYekAAAAd/sad-sad-cat.gif" alt="Sad Cat">
+          <div class="slide">Aww jeez :(</div>
+        `;
+      } else {
+        content.innerHTML = `
+          <img src="https://media1.tenor.com/m/YR1hxyktKYYAAAAC/cat.gif" alt="Cat">
+          <div class="question">So what happened that night??!?!?!?!?</div>
+          <button onclick="checkAnswer('A')">A. The night I confessed:0000</button>
+          <button onclick="checkAnswer('B')">B. Our exam??;)))</button>
+          <button onclick="checkAnswer('C')">C. Nag absent ako sa school??:ooo</button>
+          <button onclick="checkAnswer('D')">D. Idk bahala ka</button>
+        `;
+      }
+    }
+
+    // Check answer
+    function checkAnswer(choice) {
+      const content = document.querySelector('.content');
+      content.innerHTML = '';
+
+      if (choice === 'A') {
+        content.innerHTML = `
+          <img src="https://media1.tenor.com/m/cj2bC_6fDKkAAAAd/my-new-character-chill-guy.gif" alt="Chill Guy">
+          <div class="slide">thats correct wtfffffffffffffffffff!!!!!!!!!</div>
+          <button onclick="proceedToDate()">Next</button>
+        `;
+      } else {
+        content.innerHTML = `
+          <img src="https://media1.tenor.com/m/RZzU2_IbHDEAAAAd/cat-side-eye.gif" alt="Side Eye Cat">
+          <div class="slide">LUHHHHHHHHHHH MALI MIZZY JELL ARMADA!!!!!!</div>
+        `;
+      }
+    }
+
+    function proceedToDate() {
+      const content = document.querySelector('.content');
+      content.innerHTML = `
+        <div class="question">When are you free? LET'S GO FOR A WALK OR A DATE OR SOMETHING!!!</div>
+        <input type="date" id="date-picker" class="calendar">
+        <button onclick="finalize()">Submit</button>
+      `;
+    }
+
+    // Finalize date
+    function finalize() {
+      const date = document.getElementById('date-picker').value;
+      const content = document.querySelector('.content');
+      content.innerHTML = `
+        <img src="https://media1.tenor.com/m/MKkJWYigjycAAAAC/cute-cat-cat-cute.gif" alt="Cute Cat">
+        <div class="slide">yeeeey alright then, see you on ${date} MY LOVE MY HONEY SO SWEET MIZZY happy "anniversary"!!!!!!!!!!!!!!! :))</div>
+      `;
+    }
+  </script>
+</body>
+</html>
